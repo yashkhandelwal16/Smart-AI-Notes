@@ -1,0 +1,108 @@
+/* Base styles for Smart AI Notes */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Manrope', sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+#root {
+  width: 100%;
+  height: 100vh;
+}
+
+/* Performance optimizations for ultra-smooth transitions */
+:root {
+  --transition-bezier: cubic-bezier(0.3, 0, 0.2, 1);
+}
+
+/* Smooth all transitions with GPU acceleration */
+* {
+  transition: background-color 0.2s var(--transition-bezier),
+              color 0.2s var(--transition-bezier),
+              border-color 0.2s var(--transition-bezier),
+              opacity 0.2s var(--transition-bezier);
+}
+
+/* Heavy GPU acceleration for layout changes */
+[style*="width"],
+[style*="transform"]  {
+  will-change: width, transform, opacity;
+  transform: translateZ(0);
+  backface-visibility: hidden;
+  -webkit-perspective: 1000px;
+  perspective: 1000px;
+}
+
+/* Sidebar smooth resize */
+aside {
+  will-change: width;
+  transition: width 0.25s var(--transition-bezier) !important;
+  transform: translateZ(0);
+  backface-visibility: hidden;
+}
+
+/* Smooth flex transitions */
+.flex {
+  transition: flex 0.25s var(--transition-bezier);
+}
+
+/* Prevent jitter on resize - containment strategy */
+[style*="width"] {
+  contain: layout style paint;
+}
+
+/* Main container optimization */
+.flex-1 {
+  contain: layout style paint;
+}
+
+/* Prevent selection during resize drag */
+body.resizing {
+  user-select: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  -webkit-touch-callout: none;
+  cursor: grabbing !important;
+}
+
+body.resizing * {
+  user-select: none !important;
+  -webkit-user-select: none !important;
+  -moz-user-select: none !important;
+  -ms-user-select: none !important;
+  cursor: grabbing !important;
+  pointer-events: none;
+}
+
+body.resizing [class*="cursor-col-resize"] {
+  pointer-events: auto;
+}
+
+/* Cursor resize handle */
+[class*="cursor-col-resize"] {
+  will-change: background-color;
+  user-select: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+}
+
+/* Smooth scrolling */
+.overflow-y-auto, .overflow-x-auto {
+  -webkit-overflow-scrolling: touch;
+  scroll-behavior: smooth;
+}
+
+/* Prevent jank on animated elements */
+.animate-bounce,
+.animate-spin {
+  will-change: transform;
+  animation-timing-function: cubic-bezier(0.4, 0, 0.6, 1);
+}
