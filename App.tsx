@@ -33,6 +33,8 @@ const App: React.FC = () => {
   const sidebarWidthRef = useRef(256);
   const noteListWidthRef = useRef(380);
   const isSidebarVisibleRef = useRef(window.innerWidth > 1024);
+  const resizeRafRef = useRef<number | null>(null);
+  const lastClientXRef = useRef<number | null>(null);
 
   useEffect(() => {
     sidebarWidthRef.current = sidebarWidth;
@@ -132,14 +134,21 @@ const App: React.FC = () => {
     document.body.classList.add('resizing');
     
     const handleMouseMove = (e: MouseEvent) => {
-      if (isResizing === 'sidebar') {
-        const newWidth = Math.min(Math.max(180, e.clientX), 480);
-        setSidebarWidth(newWidth);
-      } else if (isResizing === 'notelist') {
-        const offset = isSidebarVisibleRef.current ? sidebarWidthRef.current : 0;
-        const newWidth = Math.min(Math.max(220, e.clientX - (offset + 1)), 600);
-        setNoteListWidth(newWidth);
-      }
+      lastClientXRef.current = e.clientX;
+      if (resizeRafRef.current !== null) return;
+      resizeRafRef.current = window.requestAnimationFrame(() => {
+        const clientX = lastClientXRef.current;
+        resizeRafRef.current = null;
+        if (clientX === null) return;
+        if (isResizing === 'sidebar') {
+          const newWidth = Math.min(Math.max(180, clientX), 480);
+          setSidebarWidth(newWidth);
+        } else if (isResizing === 'notelist') {
+          const offset = isSidebarVisibleRef.current ? sidebarWidthRef.current : 0;
+          const newWidth = Math.min(Math.max(220, clientX - (offset + 1)), 600);
+          setNoteListWidth(newWidth);
+        }
+      });
     };
     
     const handleMouseUp = () => {
@@ -153,6 +162,11 @@ const App: React.FC = () => {
     return () => {
       document.removeEventListener('mousemove', handleMouseMove, false);
       document.removeEventListener('mouseup', handleMouseUp, false);
+      if (resizeRafRef.current !== null) {
+        window.cancelAnimationFrame(resizeRafRef.current);
+        resizeRafRef.current = null;
+      }
+      lastClientXRef.current = null;
       document.body.classList.remove('resizing');
     };
   }, [isResizing, isMobile]);
@@ -321,7 +335,10 @@ const App: React.FC = () => {
       </div>
 
       {!isMobile && isSidebarVisible && (
-        <div className="w-px bg-slate-200 dark:bg-zinc-700 cursor-col-resize z-50" onMouseDown={() => setIsResizing('sidebar')} />
+        <div
+          className="w-px bg-slate-200 dark:bg-zinc-700 cursor-col-resize z-50"
+          onMouseDown={(e) => { e.preventDefault(); setIsResizing('sidebar'); }}
+        />
       )}
 
       <div className="flex-1 flex min-w-0">
@@ -338,7 +355,10 @@ const App: React.FC = () => {
         )}
 
         {!isMobile && showNoteListCol && isNoteListVisible && (
-          <div className="w-px bg-slate-200 dark:bg-zinc-700 cursor-col-resize z-50" onMouseDown={() => setIsResizing('notelist')} />
+          <div
+            className="w-px bg-slate-200 dark:bg-zinc-700 cursor-col-resize z-50"
+            onMouseDown={(e) => { e.preventDefault(); setIsResizing('notelist'); }}
+          />
         )}
 
         <div className={`flex-1 flex flex-col bg-white dark:bg-background-dark overflow-hidden relative ${isMobile && isNoteListVisible && showNoteListCol ? 'hidden' : 'flex'}`}>
