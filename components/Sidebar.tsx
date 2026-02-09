@@ -88,6 +88,10 @@ const Sidebar: React.FC<SidebarProps> = ({
             <span className="material-symbols-outlined text-[16px] sm:text-[18px] text-yellow-600">auto_stories</span>
             <span className="text-[10px] sm:text-xs truncate">Templates</span>
           </button>
+
+          <div className="pt-2 text-[9px] sm:text-[10px] text-slate-400 dark:text-zinc-500 font-medium text-center">
+            Made by Yash Khandelwal
+          </div>
         </div>
       </div>
     </aside>

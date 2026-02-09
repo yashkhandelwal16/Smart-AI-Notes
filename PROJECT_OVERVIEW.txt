@@ -1,0 +1,133 @@
+# Smart AI Notes - Project Overview
+
+This document describes the project structure, technologies, and the purpose of each major file/folder.
+This file is for documentation only and is not part of the runtime app.
+
+## Project Summary
+- App Name: Smart AI Notes
+- Type: React + Vite single-page app
+- Purpose: Note-taking with AI assistant (Gemini) and cloud sync (Supabase)
+
+## Tech Stack / Tools
+- React 19: UI development
+- TypeScript: Type-safe React code
+- Vite: Fast dev server + build tool
+- Tailwind CSS (via CDN in index.html): Utility-first styling
+- @google/genai: Gemini AI integration
+- @supabase/supabase-js: Auth + database access
+- framer-motion: Animated UI components
+- react-markdown + remark-gfm: Markdown rendering for AI replies/notes
+- clsx + tailwind-merge: Classname utilities
+
+## Env / Config
+- .env
+  - VITE_GEMINI_API_KEY / GEMINI_API_KEY: Gemini access
+  - VITE_SUPABASE_URL / VITE_SUPABASE_KEY: Supabase config
+
+## Project Structure (High Level)
+- App.tsx: Main app shell, view switching, data fetch, layout
+- index.tsx: React entry point
+- index.html: Base HTML + Tailwind CDN config
+- index.css: Global styles + performance tweaks
+- types.ts: Core TypeScript types + AppView enum
+- services/
+  - gemini.ts: Gemini API helper with retry + prompt rules
+  - supabase.ts: Supabase client initialization
+- components/
+  - Sidebar.tsx: Left sidebar navigation + actions
+  - NoteList.tsx: Notes list + search + selection
+  - NoteEditor.tsx: Editor + AI actions + preview
+  - AIChat.tsx: AI assistant chat UI
+  - FoldersView.tsx: Folders grid view
+  - SettingsView.tsx: Settings screen
+  - TemplateGallery.tsx: Templates modal
+  - ui/animated-grid-pattern.tsx: Background animation utility
+- lib/
+  - utils.ts: className utilities (cn)
+
+## File/Folder Details
+
+1. App.tsx
+- Root container for the app.
+- Auth state checks (Supabase).
+- Notes/chat fetch + state management.
+- Layout resize logic (sidebar + list).
+- View switching via AppView enum.
+
+2. components/Sidebar.tsx
+- Navigation (All Notes, Favorites, Folders, AI Assistant, Settings).
+- New Note + Templates buttons.
+- Bottom credit text.
+
+3. components/NoteList.tsx
+- Notes list, search input, selection mode.
+- Bulk delete UI.
+- Mobile/desktop view handling.
+
+4. components/NoteEditor.tsx
+- Note title/content editing.
+- Markdown preview.
+- AI actions: summarize/polish via Gemini.
+- Share actions: WhatsApp, Copy, System share.
+
+5. components/AIChat.tsx
+- AI assistant chat.
+- Workspace context list.
+- Markdown rendering for assistant responses.
+
+6. components/FoldersView.tsx
+- Group notes by folder in a grid view.
+- Folder create flow.
+
+7. components/SettingsView.tsx
+- Dark mode toggle.
+- Backup export.
+- Logout action.
+
+8. components/TemplateGallery.tsx
+- Pre-built templates selection modal.
+- Creates notes with preset structure.
+
+9. components/ui/animated-grid-pattern.tsx
+- Background animation (framer-motion + SVG pattern).
+
+10. services/gemini.ts
+- Gemini client setup.
+- Retry logic (429/5xx) with exponential backoff.
+- System instruction prompt formatting.
+
+11. services/supabase.ts
+- Supabase client initialization.
+- Env vars validation log.
+
+12. index.html
+- Tailwind config via CDN.
+- Fonts + Material Symbols load.
+- App container (#root).
+
+13. index.css
+- Global styles.
+- Resize/animation performance tweaks.
+
+14. types.ts
+- Note, ChatMessage, Template interfaces.
+- AppView enum.
+
+15. vite.config.ts
+- Vite config + env compatibility.
+- process.env injection for keys.
+- Dev server settings.
+
+16. tsconfig.json
+- TypeScript compiler options.
+
+17. metadata.json
+- App metadata + permissions (camera/microphone).
+
+## Build / Run
+- npm install
+- npm run dev
+
+## Notes
+- This file is for documentation only and is not part of the app logic.
+- If new tech is added later, update this document.

@@ -152,7 +152,7 @@ const AIChat: React.FC<AIChatProps> = ({ notes, history, onHistoryUpdate, isSide
           <form className="max-w-4xl mx-auto relative" onSubmit={handleSubmit}>
             <input 
               type="text" value={inputValue} onChange={(e) => setInputValue(e.target.value)}
-              className="w-full bg-yellow-50 dark:bg-zinc-800 border border-yellow-200 dark:border-zinc-700 rounded-xl pl-4 pr-10 py-2.5 sm:py-4 text-slate-900 dark:text-white text-[11px] sm:text-sm focus:ring-4 focus:ring-yellow-200 dark:focus:ring-primary/10 transition-all outline-none shadow-sm placeholder-slate-500 dark:placeholder-slate-400"
+              className="w-full bg-white dark:bg-zinc-800 border border-yellow-200 dark:border-zinc-700 rounded-xl pl-4 pr-10 py-2.5 sm:py-4 text-slate-900 dark:text-white text-[11px] sm:text-sm focus:ring-4 focus:ring-yellow-200 dark:focus:ring-primary/10 transition-all outline-none shadow-sm placeholder-slate-500 dark:placeholder-slate-400"
               placeholder="Ask Workspace Assistant..."
             />
             <button type="submit" className="absolute right-1.5 top-1/2 -translate-y-1/2 size-7 sm:size-10 bg-primary text-primary-text rounded-lg flex items-center justify-center active:scale-90">
